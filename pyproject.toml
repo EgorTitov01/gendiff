@@ -14,7 +14,7 @@ argparse = "^1.4.0"
 flake8 = "^7.0.0"
 
 [tool.poetry.scripts]
-gendiff = "gendiff.scripts.gendiff_ref:main"
+gendiff = "gendiff.scripts.start_gendiff:main"
 
 [build-system]
 requires = ["poetry-core"]
