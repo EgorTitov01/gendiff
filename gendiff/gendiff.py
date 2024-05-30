@@ -6,6 +6,7 @@ def generate_diff(file_path1, file_path2):
     data2 = json.load(open(file_path2))
     diff = dict()
     sorted_data1 = dict(sorted(data1.items()))
+
     for key_file1 in sorted_data1:
 
         if key_file1 not in data2:
