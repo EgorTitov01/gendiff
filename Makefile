@@ -22,4 +22,6 @@ test:
 
 coverage:
 	poetry run coverage run -m pytest tests/
+	poetry run coverage lcov
+
 
