@@ -3,7 +3,8 @@ import json
 
 
 def generate_diff(file_path1, file_path2):
-    data1, data2 = parse_file_name(file_path1, file_path2)
+    data1 = parse_file_name(file_path1)
+    data2 = parse_file_name(file_path2)
     diff = dict()
     sorted_data1 = dict(sorted(data1.items()))
 
