@@ -26,10 +26,12 @@ jobs:
         run: |
           make check
       - name: run tests and instrument coverage
-        run: poetry run coverage
+        run: make coverage
       - name: publish code coverage to code-climate
         uses: paambaati/codeclimate-action@v6.0.0
         env:
           CC_TEST_REPORTER_ID: d225929781d603a434587caa7e10c0e7927ad772fb5eb44b744dc2a0957b64f2
         with:
           debug: true
+          coverageLocations: |
+            ${{github.workspace}}/.coverage
