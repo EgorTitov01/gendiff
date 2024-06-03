@@ -3,8 +3,8 @@ import json
 
 
 def test_not_empty():
-    file1 = '/home/EgorT/PycharmProjects/project-two/python-project-50/json_files/file1.json'
-    file2 = '/home/EgorT/PycharmProjects/project-two/python-project-50/json_files/file2.json'
+    file1 = 'json_files/file1.json'
+    file2 = 'json_files/file2.json'
     result = json.dumps({
     "- follow": False,
     "host": "hexlet.io",
