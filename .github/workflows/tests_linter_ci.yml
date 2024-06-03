@@ -26,7 +26,7 @@ jobs:
         run: |
           make check
       - name: run tests and instrument coverage
-        run: coverage run -m pytest tests/
+        run: poetry run coverage
       - name: publish code coverage to code-climate
         uses: paambaati/codeclimate-action@v6.0.0
         env:
