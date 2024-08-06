@@ -6,7 +6,8 @@ def process_nodes(data1, data2):
 
     for key in keys:
 
-        if isinstance(data1.get(key), dict) and isinstance(data2.get(key), dict):
+        if (isinstance(data1.get(key), dict) and
+                isinstance(data2.get(key), dict)):
             nodes.append({
                 'type': 'parent',
                 'key': key,

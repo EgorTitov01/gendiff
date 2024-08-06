@@ -25,7 +25,7 @@ def stylish(diff, replacer=' ', spaces_count=4):
     def iter_(data, depth):
         deep_indent_size = depth + spaces_count
         current_indent = replacer * depth
-        indent_no_signs = (deep_indent_size - 2) * replacer      # -2 spaces, because further we add signs and a space
+        indent_no_signs = (deep_indent_size - 2) * replacer
         lines = []
         the_set = {None, True, False, ' '}
 
@@ -45,22 +45,43 @@ def stylish(diff, replacer=' ', spaces_count=4):
 
             match node['type']:
                 case 'deleted':
-                    lines.append(f"{indent_no_signs}- {node['key']}:{is_empty(node['value'])}{node['value']}")
+                    lines.append(f"{indent_no_signs}- {node['key']}:"
+                                 f"{is_empty(node['value'])}{node['value']}")
                 case 'new':
-                    lines.append(f"{indent_no_signs}+ {node['key']}:{is_empty(node['value'])}{node['value']}")
+                    lines.append(f"{indent_no_signs}+ {node['key']}:"
+                                 f"{is_empty(node['value'])}{node['value']}")
                 case 'unchanged':
-                    lines.append(f"{indent_no_signs}  {node['key']}:{is_empty(node['value'])}{node['value']}")
+                    lines.append(f"{indent_no_signs}  {node['key']}:"
+                                 f"{is_empty(node['value'])}{node['value']}")
                 case 'changed':
-                    lines.append(f"{indent_no_signs}- {node['key']}:{is_empty(node['value old'])}{node['value old']}")
-                    lines.append(f"{indent_no_signs}+ {node['key']}:{is_empty(node['value new'])}{node['value new']}")
+                    lines.append(f"{indent_no_signs}- {node['key']}:"
+                                 f"{is_empty(node['value old'])}"
+                                 f"{node['value old']}")
+
+                    lines.append(f"{indent_no_signs}+ "
+                                 f"{node['key']}:"
+                                 f"{is_empty(node['value new'])}"
+                                 f"{node['value new']}")
                 case 'changed from parent':
-                    lines.append(f"{indent_no_signs}- {node['key']}: {iter_(node, deep_indent_size)}")
-                    lines.append(f"{indent_no_signs}+ {node['key']}:{is_empty(node['value new'])}{node['value new']}")
+                    lines.append(f"{indent_no_signs}"
+                                 f"- {node['key']}: "
+                                 f"{iter_(node, deep_indent_size)}")
+
+                    lines.append(f"{indent_no_signs}+ {node['key']}:"
+                                 f"{is_empty(node['value new'])}"
+                                 f"{node['value new']}")
                 case 'changed to parent':
-                    lines.append(f"{indent_no_signs}- {node['key']}:{is_empty(node['value'])}{'value old'}")
-                    lines.append(f"{indent_no_signs}+ {node['key']}: {iter_(node, deep_indent_size)}")
+                    lines.append(f"{indent_no_signs}- {node['key']}:"
+                                 f"{is_empty(node['value'])}{'value old'}")
+
+                    lines.append(f"{indent_no_signs}"
+                                 f"+ {node['key']}: "
+                                 f"{iter_(node, deep_indent_size)}")
                 case 'parent':
-                    lines.append(f"{indent_no_signs}{node['symbol']} {node['key']}: {iter_(node, deep_indent_size)}")
+                    lines.append(f"{indent_no_signs}"
+                                 f"{node['symbol']} "
+                                 f"{node['key']}: "
+                                 f"{iter_(node, deep_indent_size)}")
 
         result = itertools.chain("{", lines, [current_indent + "}"])
         return '\n'.join(result)
