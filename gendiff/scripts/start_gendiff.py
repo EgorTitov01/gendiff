@@ -7,8 +7,21 @@ from gendiff.stylish import stylish
 
 
 def main():
-    print(stylish(build_diff(*(parse_some_files(*(parse_args()))))))
+    if parse_args()[2] == 'stylish':
+        form = stylish
+
+    print(
+        form(
+        build_diff(
+        *(parse_some_files(
+    (parse_args())[0], (parse_args())[1])
+        )
+        )
+        )
+    )
+
 
 
 if __name__ == '__main__':
+
     main()
