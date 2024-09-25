@@ -6,44 +6,7 @@ def process_nodes(data1, data2):
 
     for key in keys:
 
-        if (isinstance(data1.get(key), dict) and
-                isinstance(data2.get(key), dict)):
-            nodes.append({
-                'type': 'parent',
-                'key': key,
-                'children': process_nodes(data1[key], data2[key]),
-                'symbol': ' '
-            })
-        elif isinstance(data1.get(key), dict) and data2.get(key):
-            nodes.append({
-                'type': 'changed from parent',
-                'key': key,
-                'children': process_nodes(data1[key], data1[key]),
-                'value new': data2[key]
-            })
-        elif isinstance(data2.get(key), dict) and data1.get(key):
-            nodes.append({
-                'type': 'changed to parent',
-                'key': key,
-                'children': process_nodes(data2[key], data2[key]),
-                'value new': data1[key]
-                })
-        elif isinstance(data1.get(key), dict):
-            nodes.append({
-                'type': 'parent',
-                'key': key,
-                'children': process_nodes(data1[key], data1[key]),
-                'symbol': '-'
-            })
-        elif isinstance(data2.get(key), dict):
-            nodes.append({
-                'type': 'parent',
-                'key': key,
-                'children': process_nodes(data2[key], data2[key]),
-                'symbol': '+'
-            })
-
-        elif key not in data2:
+        if key not in data2:
             nodes.append({
                 'type': 'deleted',
                 'key': key,
@@ -56,13 +19,19 @@ def process_nodes(data1, data2):
                 'key': key,
                 'value': data2[key]
             })
+        elif (isinstance(data1.get(key), dict) and
+                isinstance(data2.get(key), dict)):
+            nodes.append({
+                'type': 'parent',
+                'key': key,
+                'children': process_nodes(data1[key], data2[key])
+            })
         elif data1[key] == data2[key]:
             nodes.append({
                 'type': 'unchanged',
                 'key': key,
                 'value': data2[key]
             })
-
         else:
             nodes.append({
                 'type': 'changed',

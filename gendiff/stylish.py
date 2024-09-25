@@ -1,16 +1,24 @@
 import itertools
 
 
-def transform_format(object_):
-    match str(object_):
-        case 'None':
-            return 'null'
-        case 'True':
-            return 'true'
-        case 'False':
-            return 'false'
-        case ' ':
-            return ''
+def transform_format(object_, depth):
+    if isinstance(object_, bool):
+        return str(object_).lower()
+    elif object_ is None:
+        return 'null'
+    elif isinstance(object_, dict):
+        lines = []
+        deep_indent_size = depth + 4
+        deep_indent = ' ' * deep_indent_size
+        current_indent = ' ' * depth
+        for key in object_:
+            lines.append(f"{deep_indent}"
+                         f"{key}: "
+                         f"{transform_format(object_[key], deep_indent_size)}")
+        result = itertools.chain("{", lines, [current_indent + "}"])
+        return '\n'.join(result)
+    else:
+        return object_
 
 
 def is_empty(object_):
@@ -27,61 +35,41 @@ def stylish(diff, replacer=' ', spaces_count=4):
         current_indent = replacer * depth
         indent_no_signs = (deep_indent_size - 2) * replacer
         lines = []
-        the_set = {None, True, False, ' '}
 
         for node in data['children']:
-
-            if node['key'] in the_set:
-                node['key'] = transform_format(node['key'])
-
-            if node.get('value', '_') in the_set:
-                node['value'] = transform_format(node['value'])
-
-            if node.get('value new', '_') in the_set:
-                node['value new'] = transform_format(node['value new'])
-
-            if node.get('value old', '_') in the_set:
-                node['value old'] = transform_format(node['value old'])
+            if 'value' in node:
+                value = transform_format(node.get('value'),
+                                         deep_indent_size)
+            if 'value new' in node:
+                value_new = transform_format(node.get('value new'),
+                                             deep_indent_size)
+                value_old = transform_format(node.get('value old'),
+                                             deep_indent_size)
 
             match node['type']:
                 case 'deleted':
                     lines.append(f"{indent_no_signs}- {node['key']}:"
-                                 f"{is_empty(node['value'])}{node['value']}")
+                                 f"{is_empty(node['value'])}{value}")
                 case 'new':
                     lines.append(f"{indent_no_signs}+ {node['key']}:"
-                                 f"{is_empty(node['value'])}{node['value']}")
+                                 f"{is_empty(value)}{value}")
+                case 'parent':
+                    lines.append(f"{indent_no_signs}"
+                                 f"  "
+                                 f"{node['key']}: "
+                                 f"{iter_(node, deep_indent_size)}")
                 case 'unchanged':
                     lines.append(f"{indent_no_signs}  {node['key']}:"
-                                 f"{is_empty(node['value'])}{node['value']}")
+                                 f"{is_empty(value)}{value}")
                 case 'changed':
                     lines.append(f"{indent_no_signs}- {node['key']}:"
-                                 f"{is_empty(node['value old'])}"
-                                 f"{node['value old']}")
+                                 f"{is_empty(value_old)}"
+                                 f"{value_old}")
 
                     lines.append(f"{indent_no_signs}+ "
                                  f"{node['key']}:"
-                                 f"{is_empty(node['value new'])}"
-                                 f"{node['value new']}")
-                case 'changed from parent':
-                    lines.append(f"{indent_no_signs}"
-                                 f"- {node['key']}: "
-                                 f"{iter_(node, deep_indent_size)}")
-
-                    lines.append(f"{indent_no_signs}+ {node['key']}:"
-                                 f"{is_empty(node['value new'])}"
-                                 f"{node['value new']}")
-                case 'changed to parent':
-                    lines.append(f"{indent_no_signs}- {node['key']}:"
-                                 f"{is_empty(node['value'])}{'value old'}")
-
-                    lines.append(f"{indent_no_signs}"
-                                 f"+ {node['key']}: "
-                                 f"{iter_(node, deep_indent_size)}")
-                case 'parent':
-                    lines.append(f"{indent_no_signs}"
-                                 f"{node['symbol']} "
-                                 f"{node['key']}: "
-                                 f"{iter_(node, deep_indent_size)}")
+                                 f"{is_empty(value_new)}"
+                                 f"{value_new}")
 
         result = itertools.chain("{", lines, [current_indent + "}"])
         return '\n'.join(result)
