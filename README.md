@@ -18,7 +18,7 @@ Install the package, then use gendiff in your terminal.
 
 | Command                                                                       |
 |-----------------------------------------------------------------------------|
-|[![asciicast](https://asciinema.org/a/XVFBSVVeWd7M8Ezvv1FI3qfPY.svg)](https://asciinema.org/a/XVFBSVVeWd7M8Ezvv1FI3qfPY)                                      |
+|[![asciicast](https://asciinema.org/a/5RG2rEhAsyztC3OdaYhUAHazJ.svg)](https://asciinema.org/a/5RG2rEhAsyztC3OdaYhUAHazJ)                                    |
 
 
  
