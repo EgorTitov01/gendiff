@@ -1,7 +1,7 @@
 from gendiff.tree import build_diff
 from gendiff.parse_files import parse_some_files
-from gendiff.stylish import stylish
-from gendiff.plain import plain
+from gendiff.formatters.stylish import stylish
+from gendiff.formatters.plain import plain
 
 
 def generate_diff(file1, file2, format='stylish'):
