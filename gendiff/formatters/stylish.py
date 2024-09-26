@@ -26,7 +26,7 @@ def transform_format(object_, depth):
 
 
 def is_empty(object_):
-    if object_:
+    if object_ or object_ == 0:
         return ' '
     else:
         return ''
