@@ -1,5 +1,6 @@
 from gendiff.generate import generate_diff
 
+
 def test_stylish_plain():
     file1 = 'text_files/plain/json/plain_file1.json'
     file2 = 'text_files/plain/yaml/plain_file2.yml'
@@ -34,6 +35,3 @@ def test_plain():
     result = (open(result_file)).read()
 
     assert generate_diff(file1, file2, 'plain') == result
-
-
-
