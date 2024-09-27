@@ -25,12 +25,6 @@ def transform_format(object_, depth):
         return object_
 
 
-def is_empty(object_):
-    if object_ or (object_ == 0):
-        return ' '
-    else:
-        return ''
-
 
 def stylish(data, depth=0):
     deep_indent_size = depth + spaces_count
@@ -50,27 +44,24 @@ def stylish(data, depth=0):
 
         match node['type']:
             case 'deleted':
-                lines.append(f"{indent_no_signs}- {node['key']}:"
-                             f"{is_empty(value)}{value}")
+                lines.append(f"{indent_no_signs}- {node['key']}: "
+                             f"{value}")
             case 'new':
-                lines.append(f"{indent_no_signs}+ {node['key']}:"
-                             f"{is_empty(value)}{value}")
+                lines.append(f"{indent_no_signs}+ {node['key']}: "
+                             f"{value}")
             case 'parent':
-                lines.append(f"{indent_no_signs}"
-                             f"  "
+                lines.append(f"{indent_no_signs}  "
                              f"{node['key']}: "
                              f"{stylish(node, deep_indent_size)}")
             case 'unchanged':
-                lines.append(f"{indent_no_signs}  {node['key']}:"
-                             f"{is_empty(value)}{value}")
+                lines.append(f"{indent_no_signs}  {node['key']}: "
+                             f"{value}")
             case 'changed':
-                lines.append(f"{indent_no_signs}- {node['key']}:"
-                             f"{is_empty(value_old)}"
+                lines.append(f"{indent_no_signs}- {node['key']}: "
                              f"{value_old}")
 
                 lines.append(f"{indent_no_signs}+ "
-                             f"{node['key']}:"
-                             f"{is_empty(value_new)}"
+                             f"{node['key']}: "
                              f"{value_new}")
 
     result = itertools.chain("{", lines, [current_indent + "}"])
