@@ -25,7 +25,6 @@ def transform_format(object_, depth):
         return object_
 
 
-
 def stylish(data, depth=0):
     deep_indent_size = depth + spaces_count
     current_indent = replacer * depth

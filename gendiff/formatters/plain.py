@@ -8,7 +8,9 @@ def transform_value(value):
         return 'null'
     elif isinstance(value, dict):
         return '[complex value]'
-    elif not value and value != 0:
+    elif isinstance(value, int):
+        return str(value)
+    elif not value:
         return "''"
     return f"'{value}'"
 
